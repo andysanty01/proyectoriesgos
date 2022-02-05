@@ -56,7 +56,7 @@ public class BeanAdmin implements Serializable {
 
 	}
 
-	// -----------------------------------PRODUCTOS-------------------------------------------------
+	// -----------------------------------TIPO RIESGO-------------------------------------------------
 	// Insertar
 	public void actionListenerInsertarTipoRiesgo() {
 		try {

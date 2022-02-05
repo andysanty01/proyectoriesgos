@@ -18,21 +18,12 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
-import invernadero.controller.JSFUtil;
-import invernadero.controller.seguridades.BeanSegLogin;
-import invernadero.model.compras.managers.ManagerCompras;
-import invernadero.model.core.entities.Ciudad;
-import invernadero.model.core.entities.Cliente;
-import invernadero.model.core.entities.ComprasCab;
-import invernadero.model.core.entities.ComprasDet;
-import invernadero.model.core.entities.Producto;
-import invernadero.model.core.entities.ProformasCab;
-import invernadero.model.core.entities.Proveedor;
-import invernadero.model.core.entities.SegUsuario;
-import invernadero.model.seguridades.managers.ManagerSeguridades;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
+import riesgos.model.entities.SegUsuario;
+import riesgos.model.entities.TipoRiesgo;
+import riesgos.model.managers.ManagerAdmin;
+import riesgos.model.seguridades.ManagerSeguridades;
+
+
 
 @Named
 @SessionScoped
@@ -41,76 +32,38 @@ public class BeanAdmin implements Serializable {
 	@EJB
 	private ManagerSeguridades mSeg;
 	@EJB
-	private ManagerCompras mCompras;
-	private List<Ciudad> listaCiudades;
-	private List<Proveedor> listaProveedores;
-	private List<Producto> listaProductos;
-	private List<ComprasCab> listaComprasCab;
-	private List<ComprasDet> listaComprasDet;
+	private ManagerAdmin mAdmin;
+	private List<TipoRiesgo> listaTipoRiesgo;
+	
 	private List<SegUsuario> listaUsuarios;
 
-	// Variables Ciudad
-	private Ciudad nuevaCiudad;
-	private Ciudad edicionCiudad;
+	// Variables Tipo Riesgo
+	private TipoRiesgo nuevaTipoRiesgo;
+	private TipoRiesgo edicionTipoRiesgo;
 
-	// Variables Proveedor
-	private Proveedor nuevoProveedor;
-	private Proveedor edicionProveedor;
-	private int ciudadSeleccionado;
 
-	// Variables Producto
-	private Producto nuevoProducto;
-	private Producto edicionProducto;
 
-	// Variables ComprasCab
-
-	private ComprasCab edicionComprasCab;
-
-	// Variables ComprasDet
-	private ComprasCab compraCabSeleccionada;
-	private int productoSeleccionado;
-
-	// ComprasDetalle
-	private ComprasDet nuevoDetalle;
-	private List<ComprasDet> listaDetalle;
-	private int productoIngreso;
-	private int cantidadIngreso;
-	private double precioIngreso;
-	private double totalDetalle;
-	// ComprasCabecera
-	private ComprasCab nuevaCompra;
-	private int proveedorIngreso;
-	private Date fechaMinima;
-	private boolean ivaIngreso;
-	private Date fechaIngreso;
-
-	private int idSegUsuarioSeleccionado;
-	@Inject
-	private BeanSegLogin beanSegLogin;
-
+	
 	public BeanAdmin() {
 	}
 
 	@PostConstruct
 	public void inicializar() {
-		listaCiudades = mCompras.findAllCiudades();
-		listaProveedores = mCompras.findAllProveedores();
-		listaProductos = mCompras.findAllProductos();
-		listaComprasCab = mCompras.findAllComprasCab();
+		listaTipoRiesgo = mAdmin.findAllTipoRiesgos();
 
-		nuevaCiudad = mCompras.inicializarCiudad();
-		nuevoProveedor = mCompras.inicializarProveedor();
-		nuevoProducto = mCompras.inicializarProducto();
+
+		nuevaTipoRiesgo = mAdmin.inicializarTipo();
+
 	}
 
 	// -----------------------------------PRODUCTOS-------------------------------------------------
 	// Insertar
-	public void actionListenerInsertarProducto() {
+	public void actionListenerInsertarTipoRiesgo() {
 		try {
-			mCompras.insertarProducto(beanSegLogin.getLoginDTO(), nuevoProducto);
-			JSFUtil.crearMensajeINFO("Producto creado");
-			listaProductos = mCompras.findAllProductos();
-			nuevoProducto = mCompras.inicializarProducto();
+			mAdmin.insertarTipoRiesgo(nuevaTipoRiesgo);
+			JSFUtil.crearMensajeINFO("Tipo Riesgo creado");
+			listaTipoRiesgo = mAdmin.findAllTipoRiesgos();
+			nuevaTipoRiesgo = mAdmin.inicializarTipo();
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();
@@ -118,17 +71,17 @@ public class BeanAdmin implements Serializable {
 	}
 
 	// Cargar pagina de Actualizar
-	public String actionSeleccionarEdicionProducto(Producto producto) {
-		edicionProducto = producto;
-		return "producto_edicion";
+	public String actionSeleccionarEdicionTipoRiesgo(TipoRiesgo tipo) {
+		edicionTipoRiesgo = tipo;
+		return "tipo_edicion";
 	}
 
 	// Actualizar
-	public void actionListenerActualizarProducto() {
+	public void actionListenerActualizarTipoRiesgo() {
 		try {
-			mCompras.actualizarProducto(beanSegLogin.getLoginDTO(), edicionProducto);
-			listaProductos = mCompras.findAllProductos();
-			JSFUtil.crearMensajeINFO("Producto actualizado.");
+			mAdmin.actualizarTipoRiesgo(edicionTipoRiesgo);
+			listaTipoRiesgo = mAdmin.findAllTipoRiesgos();
+			JSFUtil.crearMensajeINFO("Tipo Riesgo actualizado.");
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();
@@ -136,11 +89,11 @@ public class BeanAdmin implements Serializable {
 	}
 
 	// Eliminar
-	public void actionListenerEliminarProducto(int idProducto) {
+	public void actionListenerEliminarTipoRiesgo(int idTipoRiesgo) {
 		try {
-			mCompras.eliminarProducto(beanSegLogin.getLoginDTO(), idProducto);
-			listaProductos = mCompras.findAllProductos();
-			JSFUtil.crearMensajeINFO("Producto eliminado.");
+			mAdmin.eliminarTipoRiesgo(idTipoRiesgo);
+			listaTipoRiesgo = mAdmin.findAllTipoRiesgos();
+			JSFUtil.crearMensajeINFO("TipoRiesgo eliminado.");
 		} catch (Exception e) {
 			JSFUtil.crearMensajeERROR(e.getMessage());
 			e.printStackTrace();

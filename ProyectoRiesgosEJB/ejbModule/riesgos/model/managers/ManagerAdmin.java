@@ -96,30 +96,30 @@ public class ManagerAdmin {
 		}
 
 		// Insertar
-		public void insertarCiudad(LoginDTO loginDTO, TipoRiesgo nuevoTipo) throws Exception {
+		public void insertarCiudad(TipoRiesgo nuevoTipo) throws Exception {
 			mDAO.insertar(nuevoTipo);
-			mAuditoria.mostrarLog(loginDTO, getClass(), "insertarTipoRiesgo",
-					"Tipo Riesgo: " + nuevoTipo.getTipoRiesgoNombre() + " agregada con �xito");
+			mAuditoria.mostrarLog(TipoRiesgo.class, "insertarTipoRiesgo",
+					"Tipo Riesgo: " + nuevoTipo.getTipoRiesgoNombre() + " agregada con exito");
 		}
 
 		// Actualizar
-		public void actualizarCiudad(LoginDTO loginDTO, TipoRiesgo edicionTipo) throws Exception {
+		public void actualizarCiudad(TipoRiesgo edicionTipo) throws Exception {
 			TipoRiesgo tipo = (TipoRiesgo) mDAO.findById(TipoRiesgo.class, edicionTipo.getTipoRiesgoId());
 
 			tipo.setTipoRiesgoNombre(edicionTipo.getTipoRiesgoNombre());
 			tipo.setTipoRiesgoDescripcion(edicionTipo.getTipoRiesgoDescripcion());
 			mDAO.actualizar(tipo);
-			mAuditoria.mostrarLog(loginDTO, getClass(), "actualizarTipoRiesgo",
-					"se actualiz� el Tipo Riesgo " + edicionTipo.getTipoRiesgoNombre());
+			mAuditoria.mostrarLog(TipoRiesgo.class, "actualizarTipoRiesgo",
+					"se actualizo el Tipo Riesgo " + edicionTipo.getTipoRiesgoNombre());
 		}
 
 		// Eliminar
-		public void eliminarCiudad(LoginDTO loginDTO, int idTipoRiesgo) throws Exception {
+		public void eliminarCiudad(int idTipoRiesgo) throws Exception {
 			TipoRiesgo tipo = (TipoRiesgo) mDAO.findById(TipoRiesgo.class, idTipoRiesgo);
 			if (tipo.getRiesgos().size() > 0)
 				throw new Exception("No se puede elimininar la Tipo Riesgo porque tiene Riesgos registrados.");
 			mDAO.eliminar(TipoRiesgo.class, tipo.getTipoRiesgoId());
-			mAuditoria.mostrarLog(loginDTO, getClass(), "eliminarTipoRiesgo", "se elimin� el Tipo Riesgo " + tipo.getTipoRiesgoId());
+			mAuditoria.mostrarLog(TipoRiesgo.class, "eliminarTipoRiesgo", "se elimin� el Tipo Riesgo " + tipo.getTipoRiesgoId());
 		}
 	
 	

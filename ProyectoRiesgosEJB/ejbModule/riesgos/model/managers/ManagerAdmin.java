@@ -12,9 +12,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import invernadero.model.core.entities.Ciudad;
-import invernadero.model.seguridades.dtos.LoginDTO;
+
 import riesgos.model.entities.TipoRiesgo;
+import riesgos.model.auditoria.managers.ManagerAuditoria;
+import riesgos.model.entities.OrigenRiesgo;
 
 /**
  * Session Bean implementation class ManagerClientes
@@ -24,6 +25,9 @@ import riesgos.model.entities.TipoRiesgo;
 public class ManagerAdmin {
 	@EJB
 	private ManagerDAO mDAO;
+	
+	@EJB
+	private ManagerAuditoria mAuditoria;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -36,41 +40,40 @@ public class ManagerAdmin {
 
 	// ---------------------------------------------ORIGEN------------------------------------------------
 	// Inicializar
-	public Ciudad inicializarCiudad() {
-		Ciudad ciudad = new Ciudad();
-		ciudad.setCiuNombre("");
-		return ciudad;
+	public OrigenRiesgo inicializarOrigenRiesgo() {
+		OrigenRiesgo origen = new OrigenRiesgo();
+		origen.setOrigenRiesgoNombre("");
+		origen.setOrigenRiesgoDescripcion("");
+		return origen;
 	}
 
 	// Listar
-	public List<Ciudad> findAllCiudades() {
-		return mDAO.findAll(Ciudad.class);
+	public List<OrigenRiesgo> findAllOrigenRiesgos() {
+		return mDAO.findAll(OrigenRiesgo.class);
 	}
 
 	// Insertar
-	public void insertarCiudad(LoginDTO loginDTO, Ciudad nuevaCiudad) throws Exception {
-		mDAO.insertar(nuevaCiudad);
-		mAuditoria.mostrarLog(loginDTO, getClass(), "insertarCiudad",
-				"Ciudad: " + nuevaCiudad.getCiuNombre() + " agregada con éxito");
+	public void insertarOrigenRiesgo(OrigenRiesgo nuevaOrigenRiesgo) throws Exception {
+		mDAO.insertar(nuevaOrigenRiesgo);
+		mAuditoria.mostrarLog(OrigenRiesgo.class,"insertarOrigenRiesgo", "OrigenRiesgo: " + nuevaOrigenRiesgo.getOrigenRiesgoNombre() + " agregada con ï¿½xito");
 	}
 
 	// Actualizar
-	public void actualizarCiudad(LoginDTO loginDTO, Ciudad edicionCiudad) throws Exception {
-		Ciudad ciudad = (Ciudad) mDAO.findById(Ciudad.class, edicionCiudad.getCiuId());
+	public void actualizarOrigenRiesgo(OrigenRiesgo edicionOrigenRiesgo) throws Exception {
+		OrigenRiesgo origen = (OrigenRiesgo) mDAO.findById(OrigenRiesgo.class, edicionOrigenRiesgo.getOrigenRiesgoId());
 
-		ciudad.setCiuNombre(edicionCiudad.getCiuNombre());
-		mDAO.actualizar(ciudad);
-		mAuditoria.mostrarLog(loginDTO, getClass(), "actualizarCiudad",
-				"se actualizó la ciudad " + edicionCiudad.getCiuNombre());
+		origen.setOrigenRiesgoNombre(edicionOrigenRiesgo.getOrigenRiesgoNombre());
+		mDAO.actualizar(origen);
+		mAuditoria.mostrarLog(OrigenRiesgo.class,"actualizarOrigenRiesgo", "OrigenRiesgo: " + edicionOrigenRiesgo.getOrigenRiesgoNombre() + " actualizado con ï¿½xito");
 	}
 
 	// Eliminar
-	public void eliminarCiudad(LoginDTO loginDTO, int idCiudad) throws Exception {
-		Ciudad ciudad = (Ciudad) mDAO.findById(Ciudad.class, idCiudad);
-		if (ciudad.getProveedors().size() > 0)
-			throw new Exception("No se puede elimininar la ciudad porque tiene proveedores registrados.");
-		mDAO.eliminar(Ciudad.class, ciudad.getCiuId());
-		mAuditoria.mostrarLog(loginDTO, getClass(), "eliminarCiudad", "se eliminó la ciudad " + ciudad.getCiuId());
+	public void eliminarOrigenRiesgo(int idOrigenRiesgo) throws Exception {
+		OrigenRiesgo origen = (OrigenRiesgo) mDAO.findById(OrigenRiesgo.class, idOrigenRiesgo);
+		if (origen.getRiesgos().size() > 0)
+			throw new Exception("No se puede elimininar la origen porque tiene proveedores registrados.");
+		mDAO.eliminar(OrigenRiesgo.class, origen.getOrigenRiesgoId());
+		mAuditoria.mostrarLog(OrigenRiesgo.class,"eliminarOrigenRiesgo", "OrigenRiesgo: " + idOrigenRiesgo + " eliminado con ï¿½xito");
 	}
 	
 	
@@ -96,7 +99,7 @@ public class ManagerAdmin {
 		public void insertarCiudad(LoginDTO loginDTO, TipoRiesgo nuevoTipo) throws Exception {
 			mDAO.insertar(nuevoTipo);
 			mAuditoria.mostrarLog(loginDTO, getClass(), "insertarTipoRiesgo",
-					"Tipo Riesgo: " + nuevoTipo.getTipoRiesgoNombre() + " agregada con éxito");
+					"Tipo Riesgo: " + nuevoTipo.getTipoRiesgoNombre() + " agregada con ï¿½xito");
 		}
 
 		// Actualizar
@@ -107,7 +110,7 @@ public class ManagerAdmin {
 			tipo.setTipoRiesgoDescripcion(edicionTipo.getTipoRiesgoDescripcion());
 			mDAO.actualizar(tipo);
 			mAuditoria.mostrarLog(loginDTO, getClass(), "actualizarTipoRiesgo",
-					"se actualizó el Tipo Riesgo " + edicionTipo.getTipoRiesgoNombre());
+					"se actualizï¿½ el Tipo Riesgo " + edicionTipo.getTipoRiesgoNombre());
 		}
 
 		// Eliminar
@@ -116,7 +119,7 @@ public class ManagerAdmin {
 			if (tipo.getRiesgos().size() > 0)
 				throw new Exception("No se puede elimininar la Tipo Riesgo porque tiene Riesgos registrados.");
 			mDAO.eliminar(TipoRiesgo.class, tipo.getTipoRiesgoId());
-			mAuditoria.mostrarLog(loginDTO, getClass(), "eliminarTipoRiesgo", "se eliminó el Tipo Riesgo " + tipo.getTipoRiesgoId());
+			mAuditoria.mostrarLog(loginDTO, getClass(), "eliminarTipoRiesgo", "se eliminï¿½ el Tipo Riesgo " + tipo.getTipoRiesgoId());
 		}
 	
 	

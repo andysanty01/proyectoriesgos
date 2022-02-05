@@ -15,6 +15,8 @@ import javax.persistence.PersistenceContext;
 
 import riesgos.model.entities.TipoRiesgo;
 import riesgos.model.auditoria.managers.ManagerAuditoria;
+import riesgos.model.entities.AreaRiesgo;
+import riesgos.model.entities.NivelRiesgo;
 import riesgos.model.entities.OrigenRiesgo;
 
 /**
@@ -98,8 +100,8 @@ public class ManagerAdmin {
 		// Insertar
 		public void insertarTipoRiesgo(TipoRiesgo nuevoTipo) throws Exception {
 			mDAO.insertar(nuevoTipo);
-			mAuditoria.mostrarLog(TipoRiesgo.class, "insertarTipoRiesgo",
-					"Tipo Riesgo: " + nuevoTipo.getTipoRiesgoNombre() + " agregada con exito");
+			mAuditoria.mostrarLog(TipoRiesgo.class, "insertarTipoRiesgo","Tipo Riesgo: " + nuevoTipo.getTipoRiesgoNombre() + " agregada con exito");
+			
 		}
 
 		// Actualizar
@@ -109,8 +111,8 @@ public class ManagerAdmin {
 			tipo.setTipoRiesgoNombre(edicionTipo.getTipoRiesgoNombre());
 			tipo.setTipoRiesgoDescripcion(edicionTipo.getTipoRiesgoDescripcion());
 			mDAO.actualizar(tipo);
-			mAuditoria.mostrarLog(TipoRiesgo.class, "actualizarTipoRiesgo",
-					"se actualizo el Tipo Riesgo " + edicionTipo.getTipoRiesgoNombre());
+			mAuditoria.mostrarLog(TipoRiesgo.class, "actualizarTipoRiesgo", "TipoRiesgo: " + edicionTipo.getTipoRiesgoNombre() + " actualizado con �xito");
+			
 		}
 
 		// Eliminar
@@ -119,9 +121,96 @@ public class ManagerAdmin {
 			if (tipo.getRiesgos().size() > 0)
 				throw new Exception("No se puede elimininar la Tipo Riesgo porque tiene Riesgos registrados.");
 			mDAO.eliminar(TipoRiesgo.class, tipo.getTipoRiesgoId());
-			mAuditoria.mostrarLog(TipoRiesgo.class, "eliminarTipoRiesgo", "se elimin� el Tipo Riesgo " + tipo.getTipoRiesgoId());
+			mAuditoria.mostrarLog(TipoRiesgo.class, "eliminarTipoRiesgo", "TipoRiesgo: " + idTipoRiesgo +"se elimin� el Tipo Riesgo ");
 		}
+		
+		
+		
+		
+		//----------------------------------------------NIVEL RIESGO------------
+		
+		
+		// Inicializar
+			public NivelRiesgo inicializarNivelRiesgo() {
+				NivelRiesgo nivel = new NivelRiesgo();
+				nivel.setNivelRiesgoNombre("");
+				return nivel;
+			}
+
+			// Listar
+			public List<NivelRiesgo> findAllNivelRiesgos() {
+				return mDAO.findAll(NivelRiesgo.class);
+			}
+
+			// Insertar
+			public void insertarNivelRiesgo(NivelRiesgo nuevoNivel) throws Exception {
+				mDAO.insertar(nuevoNivel);
+				mAuditoria.mostrarLog(NivelRiesgo.class, "insertarNivelRiesgo", "Nivel Riesgo: " + nuevoNivel.getNivelRiesgoNombre() + " agregada con exito");
+			}
+
+			// Actualizar
+			public void actualizarNivelRiesgo(NivelRiesgo edicionNivel) throws Exception {
+				NivelRiesgo nivel = (NivelRiesgo) mDAO.findById(NivelRiesgo.class, edicionNivel.getNivelRiesgoId());
+
+				nivel.setNivelRiesgoNombre(edicionNivel.getNivelRiesgoNombre());
+				mDAO.actualizar(nivel);
+				mAuditoria.mostrarLog(NivelRiesgo.class, "actualizarNivelRiesgo","NivelRiesgo: " + edicionNivel.getNivelRiesgoNombre() + " actualizado con �xito");
+			}
+
+			// Eliminar
+			public void eliminarNivelRiesgo(int idNivelRiesgo) throws Exception {
+				NivelRiesgo nivel = (NivelRiesgo) mDAO.findById(NivelRiesgo.class, idNivelRiesgo);
+				if (nivel.getRiesgos().size() > 0)
+					throw new Exception("No se puede elimininar la Nivel Riesgo porque tiene Riesgos registrados.");
+				mDAO.eliminar(NivelRiesgo.class, nivel.getNivelRiesgoId());
+				mAuditoria.mostrarLog(NivelRiesgo.class, "eliminarNivelRiesgo", "NivelRiesgo: " + idNivelRiesgo +"se elimin� el Nivel Riesgo ");
+			}
 	
+			
+			
+			//----------------------------------------------AREA RIESGO------------
+			
+			
+			// Inicializar
+				public AreaRiesgo inicializarAreaRiesgo() {
+					AreaRiesgo area = new AreaRiesgo();
+					area.setAreaRiesgoNombre("");
+					area.setAreaRiesgoDireccion("");
+					area.setAreaRiesgoTelefono("");
+					return area;
+				}
+
+				// Listar
+				public List<AreaRiesgo> findAllAreaRiesgos() {
+					return mDAO.findAll(AreaRiesgo.class);
+				}
+
+				// Insertar
+				public void insertarAreaRiesgo(AreaRiesgo nuevoArea) throws Exception {
+					mDAO.insertar(nuevoArea);
+					mAuditoria.mostrarLog(AreaRiesgo.class, "insertarAreaRiesgo", "AreaRiesgo: " + nuevoArea.getAreaRiesgoNombre() + " agregada con exito");
+				}
+
+				// Actualizar
+				public void actualizarAreaRiesgo(AreaRiesgo edicionArea) throws Exception {
+					AreaRiesgo area = (AreaRiesgo) mDAO.findById(AreaRiesgo.class, edicionArea.getAreaRiesgoId());
+
+					area.setAreaRiesgoNombre(edicionArea.getAreaRiesgoNombre());
+					area.setAreaRiesgoDireccion(edicionArea.getAreaRiesgoDireccion());
+					area.setAreaRiesgoTelefono(edicionArea.getAreaRiesgoTelefono());
+					
+					mDAO.actualizar(area);
+					mAuditoria.mostrarLog(AreaRiesgo.class, "actualizarAreaRiesgo","AreaRiesgo: " + edicionArea.getAreaRiesgoNombre() + " actualizado con �xito");
+				}
+
+				// Eliminar
+				public void eliminarAreaRiesgo(int idAreaRiesgo) throws Exception {
+					AreaRiesgo area = (AreaRiesgo) mDAO.findById(AreaRiesgo.class, idAreaRiesgo);
+					if (area.getRiesgos().size() > 0)
+						throw new Exception("No se puede elimininar la Area Riesgo porque tiene Riesgos registrados.");
+					mDAO.eliminar(AreaRiesgo.class, area.getAreaRiesgoId());
+					mAuditoria.mostrarLog(AreaRiesgo.class, "eliminarAreaRiesgo", "AreaRiesgo: " + idAreaRiesgo +"se elimino el Area Riesgo ");
+				}
 	
 	
 	

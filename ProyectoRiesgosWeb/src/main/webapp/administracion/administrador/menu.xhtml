@@ -72,12 +72,8 @@
 		<p:menubar>
 			<p:menuitem value="Regresar" icon="pi pi-home"
 				action="/menu?faces-redirect=true" />
-			<p:menuitem value="Proveedores" icon="pi pi-users"
-				action="proveedores?faces-redirect=true" />
-			<p:menuitem value="Productos" icon="pi pi-briefcase"
-				action="productos?faces-redirect=true" />
-			<p:menuitem value="Reporte Compras" icon="pi pi-briefcase"
-				action="#{beanCompComprador.actionReporte()}" />
+			<p:menuitem value="Tipo Riesgo" icon="pi pi-users"
+				action="tiporiesgo?faces-redirect=true" />
 
 			<f:facet name="options">
 
@@ -97,13 +93,13 @@
 			<div>
 
 				<p:tabView>
-					<p:tab title="LISTA DE COMPRAS">
+					<p:tab title="Lista Tipo Origen">
 
 						<p class="p-m-0">
-							<p:panel header="LISTA DE COMPRAS" style="width:100%"
+							<p:panel header="Lista Tipo Origen" style="width:100%"
 								collapsed="false">
-								<h:form id="FormCompras">
-									<p:dataTable value="#{beanCompComprador.listaComprasCab}"
+								<h:form id="FormTipo">
+									<p:dataTable value="#{bean}"
 										var="p">
 
 										<p:column headerText="ID" style="width:40px">

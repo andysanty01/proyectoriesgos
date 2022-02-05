@@ -48,7 +48,15 @@ public class BeanAdmin implements Serializable {
 	private TipoRiesgo nuevaTipoRiesgo;
 	private TipoRiesgo edicionTipoRiesgo;
 
+	// Variables Nivel Riesgo
+	private List<NivelR> listaNivelRiesgo;
+	private NivelRiesgo nuevoNivelRiesgo;
+	private NivelRiesgo edicionNivelRiesgo;
 
+	// Variables Area Riesgo
+	private List<AreaRiesgo> listaAreaRiesgo;
+	private AreaRiesgo nuevoAreaRiesgo;
+	private AreaRiesgo edicionAreaRiesgo;
 
 	
 	public BeanAdmin() {
@@ -57,12 +65,19 @@ public class BeanAdmin implements Serializable {
 	@PostConstruct
 	public void inicializar() {
 		listaOrigenRiesgos = mAdmin.findAllOrigenRiesgos();
-
 		nuevoOrigenRiesgo = mAdmin.inicializarOrigenRiesgo();
+		
+	
 		listaTipoRiesgo = mAdmin.findAllTipoRiesgos();
-
-
 		nuevaTipoRiesgo = mAdmin.inicializarTipo();
+		
+		// NIvel Riesgo
+		listaNivelRiesgo = mAdmin.findAllNivelRiesgos();
+		nuevoNivelRiesgo = mAdmin.inicializarNivelRiesgo();
+		
+		//
+		listaAreaRiesgo = mAdmin.findAllAreaRiesgos();
+		nuevoAreaRiesgo = mAdmin.inicializarAreaRiesgo();
 
 	}
 
@@ -75,6 +90,7 @@ public class BeanAdmin implements Serializable {
 			JSFUtil.crearMensajeINFO("OrigenRiesgo creado");
 			listaOrigenRiesgos = mAdmin.findAllOrigenRiesgos();
 			nuevoOrigenRiesgo = mAdmin.inicializarOrigenRiesgo();
+			
 	public void actionListenerInsertarTipoRiesgo() {
 		try {
 			mAdmin.insertarTipoRiesgo(nuevaTipoRiesgo);
@@ -122,6 +138,7 @@ public class BeanAdmin implements Serializable {
 			mAdmin.eliminarOrigenRiesgo(idOrigenRiesgo);
 			listaOrigenRiesgos = mAdmin.findAllOrigenRiesgos();
 			JSFUtil.crearMensajeINFO("OrigenRiesgo eliminado.");
+			
 	public void actionListenerEliminarTipoRiesgo(int idTipoRiesgo) {
 		try {
 			mAdmin.eliminarTipoRiesgo(idTipoRiesgo);
@@ -132,4 +149,90 @@ public class BeanAdmin implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	//---------------------------------------AREA RISGO --------------------------------
+	//Insertar
+	public void actionListenerInsertarAreaRiesgo() {
+		try {
+			mAdmin.insertarAreaRiesgo(nuevoAreaRiesgo);
+			JSFUtil.crearMensajeINFO("Area Riesgo creado");
+			listaAreaRiesgo = mAdmin.findAllAreaRiesgos();
+			nuevoAreaRiesgo = mAdmin.inicializarAreaRiesgo();
+		} catch (Exception e) {
+			JSFUtil.crearMensajeERROR(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	// Actualizar
+		public void actionListenerActualizarAreaRiesgo() {
+			try {
+				mAdmin.actualizarAreaRiesgo(edicionAreaRiesgo);
+				listaAreaRiesgo = mAdmin.findAllAreaRiesgos();
+				JSFUtil.crearMensajeINFO("Area Riesgo actualizado.");
+			} catch (Exception e) {
+				JSFUtil.crearMensajeERROR(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+	
+		//Eliminar
+		
+		public void actionListenerEliminarAreaRiesgo(int idAreaRiesgo) {
+			try {
+				mAdmin.eliminarAreaRiesgo(idAreaRiesgo);
+				listaAreaRiesgo = mAdmin.findAllAreaRiesgos();
+				JSFUtil.crearMensajeINFO("Area Riesgo eliminado.");
+			} catch (Exception e) {
+				JSFUtil.crearMensajeERROR(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+	
+		
+		//---------------------------------------NIVEL RISGO --------------------------------
+		//Insertar
+		public void actionListenerInsertarnNivelRiesgo() {
+			try {
+				mAdmin.insertarNivelRiesgo(nuevoNivelRiesgo);
+				JSFUtil.crearMensajeINFO("Nivel Riesgo creado");
+				listaNivelRiesgo = mAdmin.findAllNivelRiesgos();
+				nuevoNivelRiesgo = mAdmin.inicializarNivelRiesgo();
+			} catch (Exception e) {
+				JSFUtil.crearMensajeERROR(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
+		// Actualizar
+			public void actionListenerActualizarNivelRiesgo() {
+				try {
+					mAdmin.actualizarNivelRiesgo(edicionNivelRiesgo);
+					listaNivelRiesgo = mAdmin.findAllNivelRiesgos();
+					JSFUtil.crearMensajeINFO("Nivel Riesgo actualizado.");
+				} catch (Exception e) {
+					JSFUtil.crearMensajeERROR(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		
+			//Eliminar
+			
+			public void actionListenerEliminarNivelRiesgo(int idNivelRiesgo) {
+				try {
+					mAdmin.eliminarNivelRiesgo(idNivelRiesgo);
+					listaNivelRiesgo = mAdmin.findAllNivelRiesgos();
+					JSFUtil.crearMensajeINFO("NIvel Riesgo eliminado.");
+				} catch (Exception e) {
+					JSFUtil.crearMensajeERROR(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+	
+	
+	
+	
+	
 }

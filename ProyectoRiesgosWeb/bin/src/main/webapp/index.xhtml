@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<!-- Nuestro css-->
+	<link rel="stylesheet" type="text/css" href="../../static/css/menu.css"></link>
+	<title>FACTURA</title>
+	<style type="text/css">
+.ui-panel, div.ui-state-hover {
+	margin: 10px;
+	width: 200px;
+}
+
+.ui-dashboard-column {
+	width: 220px;
+}
+
+.wrapper {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 0.10px;
+	grid-auto-rows: minmax(120px, auto);
+}
+
+.centered {
+	text-align: center;
+}
+
+.wrapperListDetalles {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-gap: 0.10px;
+	grid-auto-rows: minmax(120px, auto);
+}
+
+.wrapperTab {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-gap: 0.10px;
+	grid-auto-rows: minmax(120px, auto);
+}
+
+.one {
+	grid-column: 1;
+	grid-row: 1;
+}
+
+.two {
+	grid-column: 2;
+	grid-row: 1;
+}
+
+.three {
+	grid-column: 3;
+	grid-row: 1;
+}
+</style>
+</h:head>
+<body>
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+
+
+	<h:panelGroup>
+		<div>
+			<div>
+
+				<p:tabView>
+					<p:tab title="LISTA DE riesgos">
+
+						<p class="p-m-0">
+							<p:panel header="LISTA DE FACTURAS" style="width:100%"
+								collapsed="false">
+								<h:form id="FormFacturas">
+									<p:dataTable value="#{beanFactura.listaFactura}" var="p" styleClass="tableFacturas">
+
+										<p:column headerText="ID" style="width:40px">
+											<h:outputText value="#{p.codFactura}" />
+										</p:column>
+
+										<p:column headerText="CLIENTE">
+											<h:outputText value="#{p.cliente}" />
+										</p:column>
+
+										<p:column headerText="PLACA">
+											<h:outputText value="#{p.cliente}" />
+										</p:column>
+
+										<p:column headerText="FECHA">
+											<h:outputText value="#{p.fecha}" />
+										</p:column>
+
+										<p:column headerText="SALDO PENDIENTE">
+											<h:outputText value="#{p.total}" />
+										</p:column>
+
+										<p:column headerText="ACCIONES">
+											<p:commandButton value="PRODUCTOS"
+												title="Listar items de factura #{p.codFactura}"
+												icon="pi pi-list"
+												action="#{beanFactura.actionListarDetalles(p)}"
+												styleClass="rounded-button ui-button-success" />
+
+										</p:column>
+									</p:dataTable>
+								</h:form>
+							</p:panel>
+						</p>
+					</p:tab>
+
+
+
+
+
+
+					<!-- INGRESO DE NUEVAS FACTURA -->
+
+					<p:tab title="NUEVA FACTURA">
+
+						<h:form style="text-align: center;">
+							<div class="ui-g">
+								<div class="ui-g-6" style="text-align: center;">
+									<h3 align="center">DATOS PRINCIPALES</h3>
+									<p:panelGrid columns="2" columnClasses="ui-state-hover"
+										style="width:70%; height:20px; text-align: center; "
+										border="0">
+
+										<h:outputText value="CLIENTE:" />
+										<p:inputText value="#{beanFactura.cliente}" />
+
+										<h:outputText value="PLACA: " />
+										<p:inputText value="#{beanFactura.placa}" />
+
+										<h:outputText value="FECHA:" />
+										<p:calendar value="#{beanFactura.fecha}"
+											style="width:30px; height:20px; " />
+
+									</p:panelGrid>
+
+								</div>
+								<div class="ui-g-6" style="text-align: center;">
+									<h3 align="center">SELECCIONAR ITEM</h3>
+									<p:panelGrid columns="2"
+										columnClasses="ui-state-hover centered"
+										style="width:70%; height:20px; text-align: center; "
+										border="0">
+
+										<h:outputText value="Item:" />
+										<p:selectOneMenu value="#{beanFactura.itemSeleccionado}">
+											<f:selectItems value="#{beanFactura.listaItem}" var="c"
+												itemLabel="#{c.descripcion}" itemValue="#{c.codItem}"></f:selectItems>
+										</p:selectOneMenu>
+
+										<h:outputText value="Cantidad:" />
+										<p:spinner value="#{beanFactura.cantidad}" min="0" />
+
+									</p:panelGrid>
+									<br />
+									<p:commandButton title="Agregar producto al detalle"
+										style="width:200px; height:50px;" value="Agregar Item"
+										icon="pi pi-shopping-cart" update="@form"
+										actionListener="#{beanFactura.actionListenerAgregarDetalleFactura()}" />
+									&nbsp;&nbsp;
+									<p:commandButton title="Guardar compra" value="Guardar Factura"
+										style="width:200px; height:50px;" icon="pi pi-save"
+										update="@(.tableFacturas)" styleClass="ui-button-raised ui-button-success"
+										actionListener="#{beanFactura.actionListenerGuardarFactura()}" />
+
+
+
+
+								</div>
+								<div class="ui-g">
+									<div class="ui-g-12">
+
+										<p class="p-m-0">
+											<p:panel header="LISTA DE DETALLES" style="width:100%"
+												collapsed="false">
+												<h:form id="FormCompras">
+													<p:dataTable value="#{beanFactura.listaDetalle}" var="d"
+														style="text-align: center;">
+
+														<p:column style="text-align: center;"
+															headerText="ITEM">
+															<h:outputText value="#{d.item.descripcion}" />
+														</p:column>
+														<p:column style="text-align: center;"
+															headerText="CANTIDAD">
+															<h:outputText value="#{d.cantidad}" />
+														</p:column>
+														<p:column style="text-align: center;"
+															headerText="PRECIO UNITARIO">
+															<h:outputText value="#{d.valorUnitario}" />
+														</p:column>
+
+														<p:column style="text-align: center;"
+															headerText="SUBTOTAL">
+															<h:outputText value="#{d.subtotal}" />
+															<f:facet name="footer">
+																<h:outputText value="#{beanFactura.totalDetalle}" />
+															</f:facet>
+														</p:column>
+
+
+
+													</p:dataTable>
+												</h:form>
+											</p:panel>
+										</p>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</p:tab>
+				</p:tabView>
+			</div>
+		</div>
+	</h:panelGroup>
+</body>
+</html>

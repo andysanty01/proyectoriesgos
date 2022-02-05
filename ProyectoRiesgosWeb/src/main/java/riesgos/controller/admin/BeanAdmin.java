@@ -18,9 +18,10 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
+import riesgos.model.entities.OrigenRiesgo;
 import riesgos.model.entities.SegUsuario;
-import riesgos.model.entities.TipoRiesgo;
 import riesgos.model.managers.ManagerAdmin;
+import riesgos.model.entities.TipoRiesgo;
 import riesgos.model.seguridades.ManagerSeguridades;
 
 
@@ -33,6 +34,12 @@ public class BeanAdmin implements Serializable {
 	private ManagerSeguridades mSeg;
 	@EJB
 	private ManagerAdmin mAdmin;
+	private List<OrigenRiesgo> listaOrigenRiesgos;
+	private List<SegUsuario> listaUsuarios;
+
+	// Variables Origen
+	private OrigenRiesgo nuevoOrigenRiesgo;
+	private OrigenRiesgo edicionOrigenRiesgo;
 	private List<TipoRiesgo> listaTipoRiesgo;
 	
 	private List<SegUsuario> listaUsuarios;
@@ -49,6 +56,9 @@ public class BeanAdmin implements Serializable {
 
 	@PostConstruct
 	public void inicializar() {
+		listaOrigenRiesgos = mAdmin.findAllOrigenRiesgos();
+
+		nuevoOrigenRiesgo = mAdmin.inicializarOrigenRiesgo();
 		listaTipoRiesgo = mAdmin.findAllTipoRiesgos();
 
 
@@ -57,7 +67,14 @@ public class BeanAdmin implements Serializable {
 	}
 
 	// -----------------------------------TIPO RIESGO-------------------------------------------------
+	// -----------------------------------ORIGEN-------------------------------------------------
 	// Insertar
+	public void actionListenerInsertarOrigenRiesgo() {
+		try {
+			mAdmin.insertarOrigenRiesgo(nuevoOrigenRiesgo);
+			JSFUtil.crearMensajeINFO("OrigenRiesgo creado");
+			listaOrigenRiesgos = mAdmin.findAllOrigenRiesgos();
+			nuevoOrigenRiesgo = mAdmin.inicializarOrigenRiesgo();
 	public void actionListenerInsertarTipoRiesgo() {
 		try {
 			mAdmin.insertarTipoRiesgo(nuevaTipoRiesgo);
@@ -71,6 +88,17 @@ public class BeanAdmin implements Serializable {
 	}
 
 	// Cargar pagina de Actualizar
+	public String actionSeleccionarEdicionOrigenRiesgo(OrigenRiesgo origenRiesgo) {
+		edicionOrigenRiesgo = origenRiesgo;
+		return "origen_edicion";
+	}
+
+	// Actualizar
+	public void actionListenerActualizarOrigenRiesgo() {
+		try {
+			mAdmin.actualizarOrigenRiesgo(edicionOrigenRiesgo);
+			listaOrigenRiesgos = mAdmin.findAllOrigenRiesgos();
+			JSFUtil.crearMensajeINFO("OrigenRiesgo actualizado.");
 	public String actionSeleccionarEdicionTipoRiesgo(TipoRiesgo tipo) {
 		edicionTipoRiesgo = tipo;
 		return "tipo_edicion";
@@ -89,6 +117,11 @@ public class BeanAdmin implements Serializable {
 	}
 
 	// Eliminar
+	public void actionListenerEliminarOrigenRiesgo(int idOrigenRiesgo) {
+		try {
+			mAdmin.eliminarOrigenRiesgo(idOrigenRiesgo);
+			listaOrigenRiesgos = mAdmin.findAllOrigenRiesgos();
+			JSFUtil.crearMensajeINFO("OrigenRiesgo eliminado.");
 	public void actionListenerEliminarTipoRiesgo(int idTipoRiesgo) {
 		try {
 			mAdmin.eliminarTipoRiesgo(idTipoRiesgo);

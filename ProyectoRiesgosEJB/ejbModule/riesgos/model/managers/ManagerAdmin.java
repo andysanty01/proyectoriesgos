@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 
 import invernadero.model.core.entities.Ciudad;
 import invernadero.model.seguridades.dtos.LoginDTO;
+import riesgos.model.entities.TipoRiesgo;
 
 /**
  * Session Bean implementation class ManagerClientes
@@ -75,6 +76,48 @@ public class ManagerAdmin {
 	
 	//AQUI CODIGO BRUS
 	
+	//----------------------------------------------TIPO RIESGO------------
+	
+	
+	// Inicializar
+		public TipoRiesgo inicializarTipo() {
+			TipoRiesgo tipo = new TipoRiesgo();
+			tipo.setTipoRiesgoNombre("");
+			tipo.setTipoRiesgoDescripcion("");
+			return tipo;
+		}
+
+		// Listar
+		public List<TipoRiesgo> findAllTipoRiesgos() {
+			return mDAO.findAll(TipoRiesgo.class);
+		}
+
+		// Insertar
+		public void insertarCiudad(LoginDTO loginDTO, TipoRiesgo nuevoTipo) throws Exception {
+			mDAO.insertar(nuevoTipo);
+			mAuditoria.mostrarLog(loginDTO, getClass(), "insertarTipoRiesgo",
+					"Tipo Riesgo: " + nuevoTipo.getTipoRiesgoNombre() + " agregada con éxito");
+		}
+
+		// Actualizar
+		public void actualizarCiudad(LoginDTO loginDTO, TipoRiesgo edicionTipo) throws Exception {
+			TipoRiesgo tipo = (TipoRiesgo) mDAO.findById(TipoRiesgo.class, edicionTipo.getTipoRiesgoId());
+
+			tipo.setTipoRiesgoNombre(edicionTipo.getTipoRiesgoNombre());
+			tipo.setTipoRiesgoDescripcion(edicionTipo.getTipoRiesgoDescripcion());
+			mDAO.actualizar(tipo);
+			mAuditoria.mostrarLog(loginDTO, getClass(), "actualizarTipoRiesgo",
+					"se actualizó el Tipo Riesgo " + edicionTipo.getTipoRiesgoNombre());
+		}
+
+		// Eliminar
+		public void eliminarCiudad(LoginDTO loginDTO, int idTipoRiesgo) throws Exception {
+			TipoRiesgo tipo = (TipoRiesgo) mDAO.findById(TipoRiesgo.class, idTipoRiesgo);
+			if (tipo.getRiesgos().size() > 0)
+				throw new Exception("No se puede elimininar la Tipo Riesgo porque tiene Riesgos registrados.");
+			mDAO.eliminar(TipoRiesgo.class, tipo.getTipoRiesgoId());
+			mAuditoria.mostrarLog(loginDTO, getClass(), "eliminarTipoRiesgo", "se eliminó el Tipo Riesgo " + tipo.getTipoRiesgoId());
+		}
 	
 	
 	

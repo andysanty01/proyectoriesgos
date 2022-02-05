@@ -96,14 +96,14 @@ public class ManagerAdmin {
 		}
 
 		// Insertar
-		public void insertarCiudad(TipoRiesgo nuevoTipo) throws Exception {
+		public void insertarTipoRiesgo(TipoRiesgo nuevoTipo) throws Exception {
 			mDAO.insertar(nuevoTipo);
 			mAuditoria.mostrarLog(TipoRiesgo.class, "insertarTipoRiesgo",
 					"Tipo Riesgo: " + nuevoTipo.getTipoRiesgoNombre() + " agregada con exito");
 		}
 
 		// Actualizar
-		public void actualizarCiudad(TipoRiesgo edicionTipo) throws Exception {
+		public void actualizarTipoRiesgo(TipoRiesgo edicionTipo) throws Exception {
 			TipoRiesgo tipo = (TipoRiesgo) mDAO.findById(TipoRiesgo.class, edicionTipo.getTipoRiesgoId());
 
 			tipo.setTipoRiesgoNombre(edicionTipo.getTipoRiesgoNombre());
@@ -114,7 +114,7 @@ public class ManagerAdmin {
 		}
 
 		// Eliminar
-		public void eliminarCiudad(int idTipoRiesgo) throws Exception {
+		public void eliminarTipoRiesgo(int idTipoRiesgo) throws Exception {
 			TipoRiesgo tipo = (TipoRiesgo) mDAO.findById(TipoRiesgo.class, idTipoRiesgo);
 			if (tipo.getRiesgos().size() > 0)
 				throw new Exception("No se puede elimininar la Tipo Riesgo porque tiene Riesgos registrados.");

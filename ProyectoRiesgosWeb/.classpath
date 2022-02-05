@@ -9,7 +9,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+<<<<<<< HEAD
 	<classpathentry kind="src" path="/invernaderoEJB"/>
+=======
+>>>>>>> df1da006180bab337714aac1103e2fa83990fb46
 	<classpathentry kind="src" path="/ProyectoRiesgosEJB"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

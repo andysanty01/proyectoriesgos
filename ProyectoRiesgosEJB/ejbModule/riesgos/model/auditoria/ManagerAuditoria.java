@@ -1,4 +1,4 @@
-package riesgos.model.auditoria.managers;
+package riesgos.model.auditoria;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

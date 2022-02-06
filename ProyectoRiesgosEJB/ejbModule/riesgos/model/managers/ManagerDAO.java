@@ -301,4 +301,23 @@ public class ManagerDAO {
 			return 0;
 		return valorMax.longValue();
 	}
+	///////////////////////////////////
+	@SuppressWarnings("rawtypes")
+	public long count(Class clase, String riesgo_identificador) throws Exception {
+		Query q;
+		String sentenciaSQL;
+		long count;
+		try {
+			sentenciaSQL = "SELECT COUNT(o." + riesgo_identificador + ") FROM " + clase.getSimpleName() + " o";
+			q = em.createQuery(sentenciaSQL);
+			count = (long) q.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Error al obtener valor max: " + clase.getCanonicalName() + "[" + riesgo_identificador
+					+ "]. " + e.getMessage());
+		}
+		return count;
+	}
+	
+	
 }

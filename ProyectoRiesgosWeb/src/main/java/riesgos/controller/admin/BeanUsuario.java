@@ -34,6 +34,7 @@ public class BeanUsuario implements Serializable {
 	private ManagerSeguridades mSeg;
 	@EJB
 	private ManagerUsuario mUsuario;
+	
 
 	
 	// Variables Usuario
@@ -46,6 +47,16 @@ public class BeanUsuario implements Serializable {
 	private LocalizacionRiesgo nuevaLocalizacion;
 	private LocalizacionRiesgo edicionLocalizacion;
 	private List<LocalizacionRiesgo> listaLocalizacion;
+	
+	
+
+	// Variables Riesgo
+	private Riesgo nuevoRiesgo;
+	private Riesgo edicionRiesgo;
+	private List<Riesgo> listaRiesgo;
+	private int usuarioSelecionado ;
+	private int tipoSelecionado ;
+	private int localizacionSelecionado ;
 	
 	
 	
@@ -61,6 +72,12 @@ public class BeanUsuario implements Serializable {
 		
 		listaLocalizacion = mUsuario.findAllLocalizacionRiesgos();
 		nuevaLocalizacion = mUsuario.inicializarlocalizacion();
+		
+		
+		
+		
+		listaRiesgo = mUsuario.findAllRiesgos();
+		nuevoRiesgo = mUsuario.inicializarRiesgo();
 
 	}
 
@@ -186,6 +203,57 @@ public class BeanUsuario implements Serializable {
 					edicionLocalizacion = local;
 					return "localizacion_edicion";
 				}
+				
+				
+				
+				
+				
+				
+				
+				//---------------------------------------RIESGO --------------------------------
+				//Insertar
+				public void actionListenerInsertarRiesgo() {
+					try {
+						mUsuario.insertarRiesgo(nuevoRiesgo,usuarioSelecionado,tipoSelecionado,localizacionSelecionado);
+						JSFUtil.crearMensajeINFO("Riesgo  creado");
+						listaRiesgo = mUsuario.findAllRiesgos();
+						nuevoRiesgo = mUsuario.inicializarRiesgo();
+					} catch (Exception e) {
+						JSFUtil.crearMensajeERROR(e.getMessage());
+						e.printStackTrace();
+					}
+				}
+				
+				// Actualizar
+					public void actionListenerActualizarRiesgo() {
+						try {
+							mUsuario.actualizarRiesgo(edicionRiesgo,usuarioSelecionado,tipoSelecionado,localizacionSelecionado);
+							listaRiesgo = mUsuario.findAllRiesgos();
+							JSFUtil.crearMensajeINFO(" Riesgo actualizado.");
+						} catch (Exception e) {
+							JSFUtil.crearMensajeERROR(e.getMessage());
+							e.printStackTrace();
+						}
+					}
+				
+					//Eliminar
+					
+					public void actionListenerEliminarRiesgo(int idRiesgo) {
+						try {
+							mUsuario.eliminarRiesgo(idRiesgo);
+							listaRiesgo = mUsuario.findAllRiesgos();
+							JSFUtil.crearMensajeINFO(" Riesgo eliminado.");
+						} catch (Exception e) {
+							JSFUtil.crearMensajeERROR(e.getMessage());
+							e.printStackTrace();
+						}
+					}
+					
+					// Cargar pagina de Actualizar Usuario
+					public String actionSeleccionarEdicionRiesgo(Riesgo riesgo) {
+						edicionRiesgo = riesgo;
+						return "riesgo_edicion";
+					}
 			
 			
 	

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map; 
 
 import javax.annotation.PostConstruct; 
 import javax.ejb.EJB;
@@ -48,7 +48,7 @@ public class BeanTecnico implements Serializable {
 		codOrigen = mTecnico.codigoOrigen(Riesgo.class, "riesgo_id");
 	}
 
-	// Actualizar
+	// Actualizar 
 	public void actionListenerActualizarRiesgo() {
 		try {
 			mTecnico.actualizarRiesgo(edicionRiesgo, origenSeleccionado, nivelSelecionado, areaSelecionado);

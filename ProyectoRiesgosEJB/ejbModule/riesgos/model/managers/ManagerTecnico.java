@@ -9,7 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import riesgos.model.auditoria.managers.ManagerAuditoria;
+import riesgos.model.auditoria.ManagerAuditoria;
 import riesgos.model.entities.AreaRiesgo;
 import riesgos.model.entities.LocalizacionRiesgo;
 import riesgos.model.entities.NivelRiesgo;
@@ -58,7 +58,7 @@ public class ManagerTecnico {
     	nuevaArea.setRiesgo(usuario);
     	nuevaArea.setAvance(0);
     	mDAO.insertar(nuevaArea);
-    }
+    } 
 	
 	//======================================================================//
 

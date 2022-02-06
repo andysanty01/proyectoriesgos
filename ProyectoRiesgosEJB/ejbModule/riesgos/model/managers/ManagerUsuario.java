@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import riesgos.model.entities.TipoRiesgo;
 import riesgos.model.auditoria.managers.ManagerAuditoria;
 import riesgos.model.entities.AreaRiesgo;
+import riesgos.model.entities.LocalizacionRiesgo;
 import riesgos.model.entities.NivelRiesgo;
 import riesgos.model.entities.OrigenRiesgo;
 import riesgos.model.entities.SegUsuario;
@@ -41,7 +42,7 @@ public class ManagerUsuario {
 	public ManagerUsuario() {
 	}
 
-	// ---------------------------------------------ORIGEN------------------------------------------------
+	// ---------------------------------------------USUARIO------------------------------------------------
 	// Inicializar
 	public SegUsuario inicializarUsuario() {
 		SegUsuario usuario = new SegUsuario();
@@ -90,6 +91,62 @@ public class ManagerUsuario {
 		mDAO.eliminar(SegUsuario.class, usuario.getIdSegUsuario());
 		mAuditoria.mostrarLog(SegUsuario.class,"eliminarUsuario", "Usuario: " + idUsuario + " eliminado con exito");
 	}
+	
+	
+	
+	
+	
+	
+	
+	// ---------------------------------------------LOCALIZACION------------------------------------------------
+		// Inicializar
+		public LocalizacionRiesgo inicializarlocalizacion() {
+			LocalizacionRiesgo local = new LocalizacionRiesgo();
+			local.setLocalizacionRiesgoPais("");
+			local.setLocalizacionRiesgoProvincia("");
+			local.setLocalizacionRiesgoCanton("");
+			local.setLocalizacionRiesgoParroquia("");
+			local.setLocalizacionRiesgoZona("");
+			local.setLocalizacionRiesgoCoordenadas("");
+
+			return local;
+		}
+
+		// Listar
+		public List<LocalizacionRiesgo> findAllLocalizacionRiesgos() {
+			return mDAO.findAll(LocalizacionRiesgo.class);
+		}
+
+		// Insertar
+		public void insertarlocalizacion(LocalizacionRiesgo nuevolocalizacion) throws Exception {
+			mDAO.insertar(nuevolocalizacion);
+			mAuditoria.mostrarLog(LocalizacionRiesgo.class,"insertarLocalizacion", "Localizacion: " + nuevolocalizacion.getLocalizacionRiesgoProvincia() + " agregada con �xito");
+		}
+
+		// Actualizar
+		public void actualizarlocalizacion(LocalizacionRiesgo edicionlocalizacion) throws Exception {
+			LocalizacionRiesgo local = (LocalizacionRiesgo) mDAO.findById(LocalizacionRiesgo.class, edicionlocalizacion.getLocalizacionRiesgoId());
+			
+			local.setLocalizacionRiesgoPais(edicionlocalizacion.getLocalizacionRiesgoPais());
+			local.setLocalizacionRiesgoProvincia(edicionlocalizacion.getLocalizacionRiesgoProvincia());
+			local.setLocalizacionRiesgoCanton(edicionlocalizacion.getLocalizacionRiesgoCanton());
+			local.setLocalizacionRiesgoParroquia(edicionlocalizacion.getLocalizacionRiesgoParroquia());
+			local.setLocalizacionRiesgoZona(edicionlocalizacion.getLocalizacionRiesgoZona());
+			local.setLocalizacionRiesgoCoordenadas(edicionlocalizacion.getLocalizacionRiesgoCoordenadas());
+			
+			mDAO.actualizar(local);
+			mAuditoria.mostrarLog(LocalizacionRiesgo.class,"actualizarLocalizacion ", "Localizacion Riesgo : " + edicionlocalizacion.getLocalizacionRiesgoProvincia() + " actualizado con �xito");
+		}
+
+		// Eliminar
+		public void eliminarlocalizacion(int idLocalizacion) throws Exception {
+			LocalizacionRiesgo local = (LocalizacionRiesgo) mDAO.findById(LocalizacionRiesgo.class, idLocalizacion);
+			if (local.getRiesgos().size() > 0)
+				throw new Exception("No se puede elimininar la localizacion porque tiene riesgos registrados.");
+			mDAO.eliminar(LocalizacionRiesgo.class, local.getLocalizacionRiesgoId());
+			mAuditoria.mostrarLog(LocalizacionRiesgo.class,"eliminarLocalizacion", "localizacion: " + idLocalizacion + " eliminado con exito");
+		}
+		
 	
 	
 	

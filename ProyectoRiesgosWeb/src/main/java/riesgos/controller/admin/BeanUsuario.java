@@ -42,19 +42,31 @@ public class BeanUsuario implements Serializable {
 	private List<SegUsuario> listaUsuarios;
 	
 	
+	// Variables Localiacion
+	private LocalizacionRiesgo nuevaLocalizacion;
+	private LocalizacionRiesgo edicionLocalizacion;
+	private List<LocalizacionRiesgo> listaLocalizacion;
+	
+	
+	
 	public BeanUsuario() {
+		
 	}
 
 	@PostConstruct
 	public void inicializar() {
 		listaUsuarios = mUsuario.findAllSegUsuarios();
 		nuevoUsuario = mUsuario.inicializarUsuario();
+		
+		
+		listaLocalizacion = mUsuario.findAllLocalizacionRiesgos();
+		nuevaLocalizacion = mUsuario.inicializarlocalizacion();
 
 	}
 
 	
 		
-		//---------------------------------------NIVEL RISGO --------------------------------
+		//---------------------------------------USUARIO --------------------------------
 		//Insertar
 		public void actionListenerInsertarUsuario() {
 			try {
@@ -69,7 +81,7 @@ public class BeanUsuario implements Serializable {
 		}
 		
 		// Actualizar
-			public void actionListenerUsuario() {
+			public void actionListenerActualizarUsuario() {
 				try {
 					mUsuario.actualizarUsuario(edicionUsuario);
 					listaUsuarios = mUsuario.findAllSegUsuarios();
@@ -82,7 +94,7 @@ public class BeanUsuario implements Serializable {
 		
 			//Eliminar
 			
-			public void actionListenerUsuario(int idUsuario) {
+			public void actionListenerEliminarUsuario(int idUsuario) {
 				try {
 					mUsuario.eliminarUsuario(idNivelRiesgo);
 					listaUsuarios = mUsuario.findAllSegUsuarios();
@@ -119,5 +131,62 @@ public class BeanUsuario implements Serializable {
 				edicionArea = area;
 				return "areaRiesgo_edicion";
 			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			//---------------------------------------LOCALIZACION --------------------------------
+			//Insertar
+			public void actionListenerInsertarLocalizacion() {
+				try {
+					mUsuario.insertarlocalizacion(nuevaLocalizacion);
+					JSFUtil.crearMensajeINFO("Localizacion Riesgo creado");
+					listaLocalizacion = mUsuario.findAllLocalizacionRiesgos();
+					nuevaLocalizacion = mUsuario.inicializarlocalizacion();
+				} catch (Exception e) {
+					JSFUtil.crearMensajeERROR(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+			
+			// Actualizar
+				public void actionListenerActualizarLocaliacion() {
+					try {
+						mUsuario.actualizarlocalizacion(edicionLocalizacion);
+						listaLocalizacion = mUsuario.findAllLocalizacionRiesgos();
+						JSFUtil.crearMensajeINFO("Localizacion Riesgo actualizado.");
+					} catch (Exception e) {
+						JSFUtil.crearMensajeERROR(e.getMessage());
+						e.printStackTrace();
+					}
+				}
+			
+				//Eliminar
+				
+				public void actionListenerEliminarLocalizacion(int idLocalizacion) {
+					try {
+						mUsuario.eliminarlocalizacion(idLocalizacion);
+						listaLocalizacion = mUsuario.findAllLocalizacionRiesgos();
+						JSFUtil.crearMensajeINFO("Localizacion Riesgo eliminado.");
+					} catch (Exception e) {
+						JSFUtil.crearMensajeERROR(e.getMessage());
+						e.printStackTrace();
+					}
+				}
+				
+				// Cargar pagina de Actualizar Usuario
+				public String actionSeleccionarEdicionLocalizacion(LocalizacionRiesgo local) {
+					edicionLocalizacion = local;
+					return "localizacion_edicion";
+				}
+			
+			
 	
 }

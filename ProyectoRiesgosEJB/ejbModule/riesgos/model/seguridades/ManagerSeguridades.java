@@ -6,7 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import riesgos.model.auditoria.managers.ManagerAuditoria;
+import riesgos.model.auditoria.ManagerAuditoria;
 import riesgos.model.entities.SegAsignacion;
 import riesgos.model.entities.SegModulo;
 import riesgos.model.entities.SegPerfil;

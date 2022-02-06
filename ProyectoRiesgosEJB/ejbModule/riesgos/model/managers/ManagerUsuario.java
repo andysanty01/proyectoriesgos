@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 
 
 import riesgos.model.entities.TipoRiesgo;
-import riesgos.model.auditoria.managers.ManagerAuditoria;
+import riesgos.model.auditoria.ManagerAuditoria;
 import riesgos.model.entities.AreaRiesgo;
 import riesgos.model.entities.LocalizacionRiesgo;
 import riesgos.model.entities.NivelRiesgo;

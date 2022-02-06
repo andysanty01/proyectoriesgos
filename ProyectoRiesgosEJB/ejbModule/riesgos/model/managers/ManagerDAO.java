@@ -300,5 +300,5 @@ public class ManagerDAO {
 		if(valorMax==null)
 			return 0;
 		return valorMax.longValue();
-	}
+	}	
 }

@@ -1,0 +1,76 @@
+//botoncito
+
+<h:commandButton value="+" styleClass="addCliente" type="button"
+			onclick="PF('dlg2').show();" />
+		<p:dialog header="Nuevo Proveedor" widgetVar="dlg2" modal="true"
+			height="430" width="450">
+			<h:form styleClass="formCliente">
+				<span>
+					<p>Identificación</p> <p:inputText
+						value="#{beanKymsEntradas.nuevoProveedor.identificacion}"
+						validatorMessage="Invalid format to to cédula"
+						requiredMessage="Ingrese la cédula" required="true">
+						<f:validateRegex pattern="^\d+$" />
+					</p:inputText>
+				</span>
+				<span>
+					<p>Nombre</p> <p:inputText
+						value="#{beanKymsEntradas.nuevoProveedor.nombre}"
+						requiredMessage="Ingrese el nombre"
+						validatorMessage="Invalid format to name" required="true">
+						<f:validateRegex pattern="[a-zA-Z ]{2,254}" />
+					</p:inputText>
+				</span>
+				<span>
+					<p>Apellido</p> <p:inputText
+						value="#{beanKymsEntradas.nuevoProveedor.apellido}"
+						requiredMessage="Ingrese el apellido"
+						validatorMessage="Invalid format to apellido" required="true">
+						<f:validateRegex pattern="[a-zA-Z ]{2,254}" />
+					</p:inputText>
+				</span>
+				<span>
+					<p>Nombre Comercial</p> <p:inputText
+						value="#{beanKymsEntradas.nuevoProveedor.nombreComercial}"
+						requiredMessage="Ingrese el nombre comercial"
+						validatorMessage="Invalid format to nombre comercial"
+						required="true">
+						<f:validateRegex pattern="[a-zA-Z ]{2,254}" />
+					</p:inputText>
+				</span>
+				<span>
+					<p>Ciudad</p> <p:inputText
+						value="#{beanKymsEntradas.nuevoProveedor.ciudad}"
+						requiredMessage="Ingrese la ciudad "
+						validatorMessage="Invalid format to ciudad" required="true">
+						<f:validateRegex pattern="[a-zA-Z ]{2,254}" />
+					</p:inputText>
+				</span>
+				<span>
+					<p>Dirección</p> <p:inputText
+						value="#{beanKymsEntradas.nuevoProveedor.direccionn}"
+						required="true" requiredMessage="Ingrese la dirección" />
+				</span>
+				<span>
+					<p>Teléfono</p> <p:inputText
+						value="#{beanKymsEntradas.nuevoProveedor.telefono}"
+						requiredMessage="Ingrese el teléfono"
+						validatorMessage="Invalid format to telephone" required="true">
+						<f:validateRegex pattern="^\d+$" />
+					</p:inputText>
+				</span>
+				<span>
+					<p>Correo</p> <p:inputText
+						value="#{beanKymsEntradas.nuevoProveedor.correo}"
+						validatorMessage="Invalid format to email"
+						requiredMessage="Ingrese el correo" required="true">
+						<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
+				</span>
+
+				<h:commandButton value="Guardar"
+					actionListener="#{beanKymsEntradas.actionListenerInsertarProveedor()}"
+					styleClass="btnGuardarCliente" update="@form" />
+			</h:form>
+		</p:dialog>
